@@ -1,0 +1,196 @@
+Backend:
+	Models:
+		User:
+			1. Get token
+			2. Get lottery info
+			3. Bet based on Strategy
+			4. Save loggings
+		Strategy:
+			1. Set strategy
+			2. Get next move
+		Loggings:
+			1. Save loggings
+			2. Load loggings
+	API:
+		1. Create a Strategy
+			Send: 
+				{
+					"operation": "create_strategy",
+					"info": {
+						"game_type": String,
+						"start_streak": int,
+						"end_streak": int,
+						"odd": double,
+						"bet_amount_list": [int, ...]
+					}
+				}
+			Receive:
+				{
+					"status": "success",
+					"backend_strategy_id": int
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		2. Edit a Strategy
+			Send:
+				{
+					"operation": "edit_strategy",
+					"backend_strategy_id": int,
+					"info": {
+						"game_type": String,
+						"start_streak": int,
+						"end_streak": int,
+						"odd": double,
+						"bet_amount_list": [int, ...]
+					}
+				}
+			Receive:
+				{
+					"status": "success"					
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		3. Delete a Strategy
+			Send:
+				{
+					"operation": "delete_strategy",
+					"backend_strategy_id": int,
+				}
+			Receive:
+				{
+					"status": "success"					
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		4. Create a User
+			Send:
+				{
+					"operation": "create_user",
+					"info": {
+						"username": String,
+						"password": String,
+						"strategy": int (backend_strategy_id, default = null)
+					}
+				}
+			Receive:
+				{
+					"status": "success",
+					"backend_user_id": int
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		5. Edit a User
+			Send:
+				{
+					"operation": "edit_user",
+					"backend_user_id": int,
+					"info": {
+						"username": String,
+						"password": String,
+						"strategy": int (backend_strategy_id, default = null)
+					}
+				}
+			Receive:
+				{
+					"status": "success",
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		6. Delete a User
+			Send:
+				{
+					"operation": "delete_user",
+					"backend_user_id": int
+				}
+			Receive:
+				{
+					"status": "success",
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		7. Start Running a User
+			Send:
+				{
+					"operation": "start_user",
+					"backend_user_id": int
+				}
+			Receive:
+				{
+					"status": "success"
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		8. Stop Running a User
+			Send:
+				{
+					"operation": "stop_user",
+					"backend_user_id": int
+				}
+			Receive:
+				{
+					"status": "success"
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+		9. Get one User Status
+			Send:
+				{
+					"operation": "get_user_status",
+					"backend_user_id": int
+				}
+			Receive:
+				{
+					"status": "success",
+					"info": {
+						"balance": double,
+						"freeze": double,
+						"last_move": {
+							"game_type": String,
+							"amount": int,
+							"win_or_lose": boolean
+						}
+					}
+				}
+				{
+					"status": "fail",
+					"prompt": "..."
+				}
+Django Server:
+	Models:
+		User:
+			(1) Username
+			(2) Password
+			(3) Strategy (One to many?)
+		Strategy:
+			(1) Game type
+			(2) Start Stride
+			(3) End Stride
+			(4) Odd
+			(5) Bet amount list
+	Functions:
+		(1) "": Login
+		(2) "main": Main Control Panel
+		(3) "user/<int:user_pk>": Control Panel for User
+		(4) "strategy/<int:str_pk>": Control Panel for Strategy
+
+Web Page:
+	1. Login Page
+	2. Main Control Panel (adjust user, strategy, showing total situation)
+	3. Control Panel for one user (show situtaion of current user)
+	4. Control Panel for one strategy (show situation of current strategy)
